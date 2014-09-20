@@ -1,0 +1,51 @@
+.input-group
+  position: relative
+
+.input
+  border: 1px solid color-border
+  font-family: font-default
+  line-height: 1
+  font-size: font-size
+  padding: 6px 9px
+  width: 100%
+  color: color-text
+  +placeholder()
+    color: color-minor
+    opacity: 1
+
+.input-error
+  display: none
+  position: absolute
+  background: color-border
+  color: color-minor
+  font-weight: bold
+  font-size: 0.9em
+  left: 100%
+  top: 50%
+  transform: translateY(-50%)
+  padding: 5px 10px
+  line-height: 15px
+  white-space: nowrap
+  margin-left: 12px
+  border-radius: 2px
+  &:before
+    content: "\f071"
+    font-family: font-icon
+    color: color-pink
+    padding-right: 5px
+  &:after
+    content: ""
+    border-style: solid
+    border-color: transparent @background transparent transparent
+    border-width: 6px
+    position: absolute
+    top: 50%
+    left: @border-width * -2
+    margin-top: @border-width * -1
+  .submitted &
+    display: block
+  a
+    color: color-blue
+    text-decoration: none
+    &:hover
+      text-decoration: underline
