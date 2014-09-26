@@ -1,6 +1,5 @@
 # @cjsx React.DOM
 React = require 'react'
-cx = require 'react/lib/cx'
 Router = require 'react-router'
 Link = Router.Link
 Form = require './Form'
@@ -25,7 +24,7 @@ SignupForm = React.createClass
   mixins: [Form]
 
   propTypes:
-    showModal: React.PropTypes.func
+    onSubmit: React.PropTypes.func
 
   getInitialState: ->
     fields: ['name', 'email', 'password']
@@ -44,10 +43,7 @@ SignupForm = React.createClass
     UserStore.off 'error', @onSubmitFailed
 
   render: ->
-    classes = cx
-      submitted: @state.submitted
-
-    <form id="login-form" onSubmit={@handleSubmit} className={classes}>
+    <form id="login-form">
       <div className="input-group">
         <Input
           type="text"
@@ -84,7 +80,7 @@ SignupForm = React.createClass
   errorMessage: (field) ->
     msg = errorMsg[field][@state[field].error]
 
-    if msg
+    if msg and @state.submitted
       <div className="input-error">{msg}</div>
 
   handleSubmit: (e) ->
@@ -102,7 +98,7 @@ SignupForm = React.createClass
       password: @state.password.value
 
   onSubmitSuccess: ->
-    @props.showModal()
+    @props.onSubmit() if @props.onSubmit
 
   onSubmitFailed: (err) ->
     state = {}

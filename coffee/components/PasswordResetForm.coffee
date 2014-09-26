@@ -1,6 +1,5 @@
 # @cjsx React.DOM
 React = require 'react'
-cx = require 'react/lib/cx'
 Form = require './Form'
 Input = require './Input'
 PasswordActions = require '../actions/PasswordActions'
@@ -16,7 +15,7 @@ PasswordResetForm = React.createClass
   mixins: [Form]
 
   propTypes:
-    showModal: React.PropTypes.func
+    onSubmit: React.PropTypes.func
 
   getInitialState: ->
     fields: ['email']
@@ -33,10 +32,7 @@ PasswordResetForm = React.createClass
     PasswordStore.off 'error', @onSubmitFailed
 
   render: ->
-    classes = cx
-      submitted: @state.submitted
-
-    <form id="login-form" className={classes} onSubmit={@handleSubmit}>
+    <form id="login-form" onSubmit={@handleSubmit}>
       <div className="input-group">
         <Input
           type="email"
@@ -52,7 +48,7 @@ PasswordResetForm = React.createClass
   errorMessage: (field) ->
     msg = errorMsg[field][@state[field].error]
 
-    if msg
+    if msg and @state.submitted
       <div className="input-error">{msg}</div>
 
   handleSubmit: (e) ->
@@ -68,7 +64,7 @@ PasswordResetForm = React.createClass
       email: @state.email.value
 
   onSubmitSuccess: ->
-    @props.showModal()
+    @props.onSubmit() if @props.onSubmit
 
   onSubmitFailed: (err) ->
     state = {}

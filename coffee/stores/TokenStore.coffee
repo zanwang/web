@@ -31,6 +31,7 @@ AppDispatcher.register (payload) ->
       store.emit 'change'
 
     when Actions.TOKEN_CREATE_FAILED, Actions.TOKEN_UPDATE_FAILED, Actions.TOKEN_DESTROY_FAILED
+      store.del()
       store.emit 'error', payload.data
 
   true

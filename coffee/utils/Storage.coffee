@@ -1,6 +1,8 @@
-module.exports =
+class Storage
+  prefix: 'mm_'
+
   _key: (key) ->
-    'mm_' + key
+    @prefix + key
 
   get: (key) ->
     throw new Error 'Key is required' unless key?
@@ -10,6 +12,7 @@ module.exports =
 
   set: (key, value) ->
     throw new Error 'Key is required' unless key?
+    throw new Error 'Value is required' unless value?
 
     localStorage.setItem @_key(key), JSON.stringify value
 
@@ -20,3 +23,5 @@ module.exports =
 
   clear: ->
     localStorage.clear()
+
+module.exports = new Storage()

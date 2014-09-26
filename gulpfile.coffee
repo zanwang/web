@@ -130,6 +130,8 @@ gulp.task 'server', ->
   app.get '/signup', renderView 'app'
   app.get '/password-reset', renderView 'app'
   app.get '/app', renderView 'app'
+  app.get '/app/settings', renderView 'app'
+  app.get '/app/domains/:id', renderView 'app'
   app.use serveStatic path.resolve './public'
 
   app.listen port

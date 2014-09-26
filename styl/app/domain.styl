@@ -1,0 +1,91 @@
+.new-domain-btn
+  float: right
+  &:before
+    content: "\f067"
+    font-family: font-icon
+    font-weight: normal
+    padding-right: 6px
+
+#empty-domain-list
+  background: #fff
+  border: 1px solid color-border
+  text-align: center
+  padding: 30px
+  border-radius: 3px
+  p
+    line-height: 1.6
+    margin: 20px 0
+  .btn
+    float: none
+
+#domain-list
+  background: #fff
+  border-radius: 3px
+  border: 1px solid color-border
+
+.domain-wrap
+  padding: 0 30px
+  display: block
+  text-decoration: none
+  &:last-of-type
+    .domain
+      border-bottom: none
+
+.domain
+  padding: 20px 0
+  border-bottom: 1px solid color-border
+  display: block
+  position: relative
+  &:before
+    content: "\f054"
+    font-family: font-icon
+    font-size: 20px
+    color: color-border
+    height: @font-size
+    width: @font-size
+    line-height: @font-size
+    text-align: center
+    position: absolute
+    right: 0
+    top: 50%
+    margin-top: @font-size * -0.5
+  &:hover
+    &:before
+      color: color-blue
+    .domain-name
+      color: color-blue
+
+.domain-name
+  font-size: 1.5em
+  line-height: 1
+  color: color-text
+  display: block
+  &:after
+    content: ".maji.moe"
+    color: color-minor
+    font-weight: 300
+
+.domain-expired-date
+  color: color-minor
+  font-size: 0.9em
+  padding-top: 8px
+  line-height: 1
+  display: block
+
+.expand-domain-btn
+  float: right
+  margin-left: 15px
+  display: none
+  &:before
+    content: "\f021"
+    font-family: font-icon
+    font-weight: normal
+    padding-right: 6px
+
+.delete-domain-btn
+  float: right
+  &:before
+    content: "\f1f8"
+    font-family: font-icon
+    font-weight: normal
+    padding-right: 6px

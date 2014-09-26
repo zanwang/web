@@ -2,12 +2,15 @@
 React = require 'react'
 cx = require 'react/lib/cx'
 
-_id = 0
+_id = 1
+stack = []
+activeModal = 0
 
 Modal = React.createClass
   propTypes:
     title: React.PropTypes.string
     canDismiss: React.PropTypes.bool
+    onHide: React.PropTypes.func
 
   getDefaultProps: ->
     canDismiss: true
@@ -17,10 +20,14 @@ Modal = React.createClass
     isShown: false
 
   componentDidMount: ->
-    #
+    activeModal = @state.id
+    stack.push @state.id
+    window.addEventListener 'keydown', @handleKeydown
 
   componentWillUnmount: ->
-    #
+    window.removeEventListener 'keydown', @handleKeydown
+    stack.pop()
+    activeModal = if stack.length then stack[stack.length - 1] else 0
 
   render: ->
     classes = cx
@@ -31,7 +38,9 @@ Modal = React.createClass
       <div className="modal-back" onClick={@_dismiss}/>
       <div className="modal-dialog">
         {@renderHeader()}
-        <div className="modal-body">{@props.children}</div>
+        <div className="modal-body">
+          {@props.children}
+        </div>
         {@renderCloseBtn()}
       </div>
     </div>
@@ -44,20 +53,23 @@ Modal = React.createClass
 
   renderCloseBtn: ->
     if @props.canDismiss
-      <a className="modal-close-btn" onClick={@_dismiss}/>
+      <a className="modal-close-btn" onClick={@_dismiss}>&times;</a>
 
-  open: ->
+  show: ->
     @setState isShown: true
 
-  close: ->
+  hide: ->
     @setState isShown: false
+    @props.onHide() if @props.onHide
 
   toggle: ->
-    if @state.isShown then @close() else @open()
+    if @state.isShown then @hide() else @show()
 
   _dismiss: ->
-    return unless @props.canDismiss
+    @hide() if @props.canDismiss and activeModal is @state.id
 
-    @close()
+  handleKeydown: (e) ->
+    code = e.keyCode or e.which
+    @_dismiss() if code is 27
 
 module.exports = Modal

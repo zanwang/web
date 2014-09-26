@@ -1,20 +1,66 @@
 .input-group
   position: relative
 
-.input
+$input
   border: 1px solid color-border
   font-family: font-default
-  line-height: 1
   font-size: font-size
-  padding: 6px 9px
   width: 100%
+  height: auto
   color: color-text
+  outline: none
+  border-radius: 2px
+  background: #fff
+
+.input
+  @extend $input
+  padding: 6px 9px
   +placeholder()
     color: color-minor
     opacity: 1
+  &:focus
+    border-color: color-blue
+  &:disabled
+    background: color-background
+    cursor: not-allowed
+
+.select
+  @extend $input
+  position: relative
+  display: block
+  &:before
+    content: attr(data-value)
+    position: absolute
+    top: 6px
+    left: 9px
+    bottom: 6px
+    right: 9px
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+  &:after
+    content: ""
+    border-style: solid
+    border-width: 5px
+    border-color: color-border transparent transparent
+    position: absolute
+    top: 50%
+    right: 8px
+    margin-top: @border-width * -0.5
+  &.focus
+    border-color: color-blue
+  select
+    opacity: 0
+    padding: 6px 9px
+    appearance: none
+    width: 100%
+    &:disabled
+      background: color-background
+      cursor: not-allowed
+  option
+    font-size: font-size
 
 .input-error
-  display: none
   position: absolute
   background: color-border
   color: color-minor
@@ -33,6 +79,7 @@
     font-family: font-icon
     color: color-pink
     padding-right: 5px
+    font-weight: normal
   &:after
     content: ""
     border-style: solid
@@ -42,8 +89,6 @@
     top: 50%
     left: @border-width * -2
     margin-top: @border-width * -1
-  .submitted &
-    display: block
   a
     color: color-blue
     text-decoration: none

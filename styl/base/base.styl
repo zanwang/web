@@ -8,7 +8,7 @@
        url(font-icon-path + ".ttf?v=" + font-icon-version) format("truetype"),
        url(font-icon-path + ".svg?v=" + font-icon-version + "#fontawesomeregular") format("svg")
 
-html
+html, body
   height: 100%
 
 body
@@ -16,4 +16,7 @@ body
   font: font-size font-default
   background: color-background
   color: color-text
+
+#container
   min-height: 100%
+  position: relative

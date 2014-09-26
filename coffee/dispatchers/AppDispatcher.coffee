@@ -6,11 +6,10 @@ class AppDispatcher extends Dispatcher
       action: action
       data: data
 
-  handleServerAction: (successAction, failedAction) ->
+  handleServerAction: (successAction, failedAction, data = {}) ->
     (res) =>
-      if res.error
-        @emit failedAction, res.body
-      else
-        @emit successAction, res.body
+      action = if res.error then failedAction else successAction
+
+      @emit action, res.body or data
 
 module.exports = new AppDispatcher()

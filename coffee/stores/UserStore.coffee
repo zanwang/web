@@ -18,10 +18,10 @@ store = new UserStore()
 
 AppDispatcher.register (payload) ->
   switch payload.action
-    when Actions.USER_CREATE_SUCCESS
+    when Actions.USER_CREATE_SUCCESS, Actions.USER_GET_SUCCESS, Actions.USER_UPDATE_SUCCESS
       store.set payload.data
       store.emit 'change'
-    when Actions.USER_CREATE_FAILED
+    when Actions.USER_CREATE_FAILED, Actions.USER_GET_FAILED, Actions.USER_UPDATE_FAILED
       store.emit 'error', payload.data
 
   true

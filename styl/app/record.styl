@@ -1,0 +1,262 @@
+record-type-width = 90px
+record-name-width = 150px
+record-ttl-width = 100px
+record-fn-width = 100px
+record-field-padding = 20px
+record-value-left = record-type-width + record-name-width + record-field-padding * 2
+record-value-right = record-ttl-width + record-fn-width + record-field-padding * 2
+
+#record-list
+  background: #fff
+  border: 1px solid color-border
+  border-radius: 3px
+  padding: 0 30px
+
+#record-list-header
+  clearfix()
+  line-height: 1
+  color: color-minor
+  padding: 0 30px 10px
+  font-size: 0.9em
+  font-weight: bold
+  text-shadow: 0 1px #fff
+  position: relative
+
+#record-list-header-type
+  float: left
+  margin-right: record-field-padding
+  width: record-type-width
+
+#record-list-header-name
+  float: left
+  margin-right: record-field-padding
+  width: record-name-width
+
+#record-list-header-value
+  position: absolute
+  top: 0
+  left: record-value-left + 30px
+  right: record-value-right + 30px
+
+#record-list-header-ttl
+  float: right
+  width: record-ttl-width
+  margin-right: record-fn-width + record-field-padding
+
+.record-form-wrap
+  padding: 20px 0
+
+.record-form
+  clearfix()
+  position: relative
+  &.mx
+    height: 70px
+
+.record-input-type
+  float: left
+  width: record-type-width
+  margin-right: record-field-padding
+
+.record-input-name
+  float: left
+  width: record-name-width
+  margin-right: record-field-padding
+
+.record-input-value
+  position: absolute
+  top: 0
+  left: record-value-left
+  right: record-value-right
+
+.record-input-ttl
+  float: right
+  width: record-ttl-width
+
+.record-input-priority-wrap
+  clearfix()
+  display: none
+  padding-top: 10px
+  color: color-minor
+  line-height: 30px
+  .mx &
+    display: block
+
+.record-input-priority
+  display: inline-block
+  padding-left: 10px
+  width: 100px
+
+.record-create-btn
+  float: right
+  width: record-fn-width
+  margin-left: record-field-padding
+  &:before
+    content: "\f067"
+    font-family: font-icon
+    font-weight: normal
+    padding-right: 6px
+
+.record-update-btn
+  float: right
+  width: record-fn-width
+  &:before
+    content: "\f0c7"
+    font-family: font-icon
+    font-weight: normal
+    padding-right: 8px
+
+.record-discard-btn
+  position: absolute
+  left: -45px
+  top: 0
+  bottom: 0
+  margin: auto
+  width: 25px
+  height: @width
+  text-align: center
+  line-height: @width
+  border-radius: 50%
+  background: color-border
+  color: #fff
+  padding: 0
+  &:hover
+    background: color-minor
+  &:before
+    content: "\f060"
+    font-family: font-icon
+    font-weight: normal
+
+.record-input-fn
+  float: right
+  width: record-fn-width
+  margin-left: record-field-padding
+
+.record-input-error
+  top: 100%
+  left: 0
+  transform: none
+  margin-top: 12px
+  margin-left: 0
+  z-index: 1
+  &:after
+    border-color: transparent transparent color-border
+    left: 10px
+    top: -12px
+    margin-top: 0
+
+.record
+  clearfix()
+  padding: 20px 0
+  border-bottom: 1px solid color-border
+  position: relative
+
+.record-type
+  float: left
+  margin-right: record-field-padding
+  width: record-type-width
+  position: relative
+  padding-left: 18px
+  &:before
+    content: ""
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    margin: auto
+    border-radius: 50%
+    width: 10px
+    height: 10px
+    .a &
+      background: record-a
+    .cname &
+      background: record-cname
+    .mx &
+      background: record-mx
+    .txt &
+      background: record-txt
+    .spf &
+      background: record-spf
+    .aaaa &
+      background: record-aaaa
+    .ns &
+      background: record-ns
+    .loc &
+      background: record-loc
+
+.record-name
+  float: left
+  margin-right: record-field-padding
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  width: record-name-width
+
+.record-value
+  position: absolute
+  top: 20px
+  left: record-value-left
+  right: record-value-right
+
+.record-ttl
+  float: right
+  width: record-ttl-width
+
+.record-fn
+  float: right
+  width: record-fn-width
+  margin-left: record-field-padding
+  position: relative
+  text-align: right
+  height: font-size
+  .dropdown
+    text-align: left
+    right: -10px
+
+.record-field-note
+  color: color-minor
+
+.record-options-btn
+  background: none
+  padding: 0
+  position: absolute
+  right: 0
+  top: 0
+  bottom: 0
+  margin: auto
+  height: 20px
+  width: 30px
+  color: color-border
+  &:before, &:after
+    font-family: font-icon
+  &:before
+    content: "\f013"
+    font-size: 20px
+    width: @font-size
+    height: @font-size
+    text-align: center
+    position: absolute
+    top: 0
+    bottom: 0
+    right: 12px
+    margin: auto
+  &:after
+    content: "\f0d7"
+    font-size: 10px
+    width: @font-size
+    height: @font-size
+    position: absolute
+    top: 0
+    bottom: 0
+    right: 0
+    margin: auto
+  &:hover
+    color: color-blue
+
+.record-edit-btn
+  &:before
+    content: "\f040"
+
+.record-destroy-btn
+  color: color-pink
+  &:before
+    content: "\f1f8"

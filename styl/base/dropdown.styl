@@ -1,0 +1,57 @@
+.dropdown
+  position: absolute
+  top: 100%
+  right: 0
+  background: #fff
+  border: 1px solid color-border
+  border-radius: 4px
+  padding: 6px 0
+  min-width: 130px
+  margin-top: 12px
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1)
+  display: none
+  z-index: 1000
+  &:before, &:after
+    content: ""
+    border-style: solid
+    border-width: 8px
+    border-color: transparent
+    right: 25px
+    position: absolute
+  &:before
+    border-bottom-color: color-border
+    top: -16px
+  &:after
+    border-bottom-color: #fff
+    top: -15px
+  &.on
+    display: block
+
+.dropdown-item
+  line-height: 1
+  color: color-text
+  padding: 8px 16px
+  display: block
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  position: relative
+
+.dropdown-link
+  @extend .dropdown-item
+  color: color-text
+  text-decoration: none
+  cursor: pointer
+  &:before
+    font-family: font-icon
+    color: color-border
+    position: absolute
+    right: 16px
+  &:hover
+    background: #eee
+    &:before
+      color: color-minor
+
+.dropdown-sep
+  border-bottom: 1px solid color-border
+  margin: 6px 0

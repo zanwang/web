@@ -1,6 +1,5 @@
 # @cjsx React.DOM
 React = require 'react'
-cx = require 'react/lib/cx'
 Router = require 'react-router'
 Link = Router.Link
 Input = require './Input'
@@ -39,10 +38,7 @@ LoginForm = React.createClass
     TokenStore.off 'error', @onSubmitFailed
 
   render: ->
-    classes = cx
-      submitted: @state.submitted
-
-    <form id="login-form" onSubmit={@handleSubmit} className={classes}>
+    <form id="login-form" onSubmit={@handleSubmit}>
       <div className="input-group">
         <Input
           type="email"
@@ -69,7 +65,7 @@ LoginForm = React.createClass
   errorMessage: (field) ->
     msg = errorMsg[field][@state[field].error]
 
-    if msg
+    if msg and @state.submitted
       <div className="input-error">{msg}</div>
 
   handleSubmit: (e) ->
@@ -86,7 +82,7 @@ LoginForm = React.createClass
       password: @state.password.value
 
   onSubmitSuccess: ->
-    console.log 'success'
+    Router.transitionTo 'app'
 
   onSubmitFailed: (err) ->
     state = {}

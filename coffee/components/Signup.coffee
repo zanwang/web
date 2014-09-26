@@ -13,18 +13,18 @@ Signup = React.createClass
   render: ->
     <div id="login-wrap">
       <div id="login-body">
-        <SignupForm showModal={@showModal}/>
+        <SignupForm onSubmit={@showModal}/>
         <div id="login-links">
           Already have an account? <strong><Link to="login" className="login-link">Log in</Link></strong>
         </div>
       </div>
       <LoginFooter/>
-      <Modal title="You're almost done!" dismiss={false} ref="modal">
+      <Modal title="You're almost done!" canDismiss={false} ref="modal">
         <p>Please check the activation email in your mailbox to go on.</p>
       </Modal>
     </div>
 
   showModal: ->
-    @refs.modal.open()
+    @refs.modal.show()
 
 module.exports = Signup

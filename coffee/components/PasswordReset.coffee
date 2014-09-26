@@ -13,7 +13,7 @@ PasswordReset = React.createClass
   render: ->
     <div id="login-wrap">
       <div id="login-body">
-        <PasswordResetForm showModal={@showModal}/>
+        <PasswordResetForm onSubmit={@showModal}/>
         <div id="login-links">
           <Link to="login" className="login-link">Log in</Link>
         </div>
@@ -25,6 +25,6 @@ PasswordReset = React.createClass
     </div>
 
   showModal: ->
-    @refs.modal.open()
+    @refs.modal.show()
 
 module.exports = PasswordReset

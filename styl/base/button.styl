@@ -12,6 +12,9 @@
   outline: none
   user-select: none
   transition: 0.2s
+  &:disabled
+    opacity: 0.6
+    pointer-events: none
   &.transcluent
     border: 2px solid color-blue
     font-family: font-title
@@ -27,6 +30,17 @@
     color: #fff
     &:hover
       background: lighten(color-blue, 20%)
+  &.danger
+    background: #fff
+    color: color-pink
+    &:hover
+      background: color-pink
+      color: #fff
+  &.success
+    background: color-green
+    color: #fff
+    &:hover
+      background: darken(color-green, 20%)
   &.large
     font-size: 1.5em
     padding: 12px 24px
