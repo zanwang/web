@@ -14,6 +14,9 @@ serveStatic = require 'serve-static'
 cons = require 'consolidate'
 fs = require 'fs'
 yaml = require 'js-yaml'
+_ = require 'lodash'
+merge = require 'merge-stream'
+moment = require 'moment'
 
 assets = yaml.safeLoad fs.readFileSync(path.resolve('./assets.yml'), 'utf8')
 
@@ -174,11 +177,11 @@ gulp.task 'server', ->
 
 gulp.task 'watch', ['browserify:watch', 'stylus:watch', 'server']
 
-gulp.task 'build', ['browserify', 'stylus'], ->
+gulp.task 'minify', ['browserify', 'stylus'], ->
   assetsRef = $.useref.assets
     searchPath: 'public'
 
-  gulp.src 'views/*.html'
+  gulp.src 'views/**/*.html'
     .pipe $.template assetHelpers
     .pipe assetsRef
     .pipe $.if '*.js', $.uglify()
@@ -199,6 +202,28 @@ gulp.task 'build', ['browserify', 'stylus'], ->
     .pipe gulp.dest 'build'
     .pipe $.rev.manifest()
     .pipe gulp.dest 'build'
+
+gulp.task 'build', ['minify'], ->
+  manifest = _.values require './build/rev-manifest.json'
+    .map (item) ->
+      'build/' + item
+
+  assets = gulp.src manifest
+    .pipe $.rename (path) ->
+      path.dirname = 'public/' + path.extname.substring(1)
+      path
+
+  fonts = gulp.src 'bower_components/font-awesome/fonts/*'
+    .pipe $.rename dirname: 'public/fonts'
+
+  views = gulp.src 'build/**/*.html'
+    .pipe $.rename (path) ->
+      path.dirname = 'views/' + path.dirname
+      path
+
+  merge assets, fonts, views
+    .pipe $.zip moment().format('YYYY-MM-DD_HH-mm-ss') + '.zip'
+    .pipe gulp.dest 'build/dist'
 
 gulp.task 'clean', ['stylus:clean', 'browserify:clean', 'fontawesome:clean'], ->
   gulp.src 'build/**/*', read: false
