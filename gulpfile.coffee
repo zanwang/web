@@ -11,7 +11,11 @@ gutil = require 'gulp-util'
 prettyTime = require 'pretty-hrtime'
 express = require 'express'
 serveStatic = require 'serve-static'
+cons = require 'consolidate'
 fs = require 'fs'
+yaml = require 'js-yaml'
+
+assets = yaml.safeLoad fs.readFileSync(path.resolve('./assets.yml'), 'utf8')
 
 errorHandler = (err) ->
   gutil.beep()
@@ -116,19 +120,50 @@ gulp.task 'fontawesome:clean', ->
   gulp.src 'public/fonts/*', read: false
     .pipe $.rimraf()
 
+assetHelperBase = (type, name) ->
+  dest = "/#{type}/#{name}.#{type}"
+  result = ''
+
+  result += "\n<!-- build:#{type} #{dest} -->"
+
+  for item in assets[type][name]
+    result += "\n"
+    extname = path.extname item
+    item += '.' + type unless extname
+
+    switch type
+      when 'css'
+        result += "<link rel=\"stylesheet\" href=\"/css/#{item}\">"
+      when 'js'
+        result += "<script src=\"/js/#{item}\"></script>"
+
+  result += "\n<!-- endbuild -->"
+
+  result
+
+assetHelpers =
+  css: assetHelperBase.bind @, 'css'
+  js: assetHelperBase.bind @, 'js'
+
 renderView = (name) ->
   (req, res, next) ->
-    stream = fs.createReadStream path.resolve "./views/#{name}.html"
-    stream.pipe res
+    res.render name, assetHelpers, (err, html) ->
+      return next err if err
+      res.end html
 
 gulp.task 'server', ->
   app = express()
   port = 4000
 
+  app.engine 'html', cons.lodash
+  app.set 'view engine', 'html'
+  app.set 'views', path.resolve './views'
+
   app.get '/', renderView 'index'
   app.get '/login', renderView 'app'
   app.get '/signup', renderView 'app'
   app.get '/password-reset', renderView 'app'
+  app.get '/users/:user_id/passwords/reset/:token', renderView 'password_reset'
   app.get '/app', renderView 'app'
   app.get '/app/settings', renderView 'app'
   app.get '/app/domains/:id', renderView 'app'
@@ -140,18 +175,19 @@ gulp.task 'server', ->
 gulp.task 'watch', ['browserify:watch', 'stylus:watch', 'server']
 
 gulp.task 'build', ['browserify', 'stylus'], ->
-  assets = $.useref.assets
+  assetsRef = $.useref.assets
     searchPath: 'public'
 
   gulp.src 'views/*.html'
-    .pipe assets
+    .pipe $.template assetHelpers
+    .pipe assetsRef
     .pipe $.if '*.js', $.uglify()
     .pipe $.if '*.css', $.autoprefixer
       browsers: ['last 2 versions']
       cascade: false
     .pipe $.if '*.css', $.minifyCss()
     .pipe $.rev()
-    .pipe assets.restore()
+    .pipe assetsRef.restore()
     .pipe $.useref()
     .pipe $.revReplace()
     .pipe $.if '*.html', $.htmlmin

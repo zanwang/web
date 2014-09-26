@@ -1,0 +1,32 @@
+css:
+  base:
+    - base/reset
+    - base/base
+    - base/button
+    - base/form
+    - base/modal
+    - base/dropdown
+  home:
+    - home/base
+    - home/header
+    - home/body
+    - home/footer
+  app:
+    - app/base
+    - app/header
+    - app/domain
+    - app/record
+    - app/settings
+    - app/footer
+  login:
+    - login/base
+    - login/body
+    - login/footer
+  error:
+    - error/error
+
+js:
+  app:
+    - app
+  home:
+    - home
