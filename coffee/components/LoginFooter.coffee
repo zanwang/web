@@ -3,8 +3,8 @@ React = require 'react'
 
 LoginFooter = React.createClass
   render: ->
-    <footer id="login-footer">
-      <a href="/" id="login-footer-home">maji.moe</a>
+    <footer id="footer-logo-wrap">
+      <a href="/" id="footer-logo">maji.moe</a>
     </footer>
 
 module.exports = LoginFooter

@@ -6,6 +6,7 @@ css:
     - base/form
     - base/modal
     - base/dropdown
+    - base/footer
   home:
     - home/base
     - home/header
@@ -21,7 +22,6 @@ css:
   login:
     - login/base
     - login/body
-    - login/footer
   error:
     - error/error
 
