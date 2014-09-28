@@ -43,7 +43,6 @@ We use [React] and [Flux]. See [this post][Flux Architecture] to learn about the
 
 - **stylus** - Compile Stylus files
 - **browserify** - Browserify
-- **fontawesome** - Copy FontAwesome files to public folder
 - **server** - Run test server
 - **watch** - Watch for changes and compile files automatically and run test server
 - **minify** - Minify all files

@@ -17,6 +17,7 @@ yaml = require 'js-yaml'
 _ = require 'lodash'
 merge = require 'merge-stream'
 moment = require 'moment'
+del = require 'del'
 
 assets = yaml.safeLoad fs.readFileSync(path.resolve('./assets.yml'), 'utf8')
 
@@ -87,9 +88,8 @@ gulp.task 'stylus', ->
 gulp.task 'stylus:watch', ->
   gulp.watch 'styl/**/*.styl', ['stylus']
 
-gulp.task 'stylus:clean', ->
-  gulp.src 'public/css/**/*.css', read: false
-    .pipe $.rimraf()
+gulp.task 'stylus:clean', (callback) ->
+  del 'public/css/**/*.css', callback
 
 gulp.task 'browserify:app', ->
   runBrowserify './app.coffee', false
@@ -97,9 +97,8 @@ gulp.task 'browserify:app', ->
 gulp.task 'browserify:app:watch', ->
   runBrowserify './app.coffee', true
 
-gulp.task 'browserify:app:clean', ->
-  gulp.src 'public/js/app.js', read: false
-    .pipe $.rimraf()
+gulp.task 'browserify:app:clean', (callback) ->
+  del 'public/js/app.js', callback
 
 gulp.task 'browserify:home', ->
   runBrowserify './home.coffee', false
@@ -107,21 +106,12 @@ gulp.task 'browserify:home', ->
 gulp.task 'browserify:home:watch', ->
   runBrowserify './home.coffee', true
 
-gulp.task 'browserify:home:clean', ->
-  gulp.src 'public/js/home.js', read: false
-    .pipe $.rimraf()
+gulp.task 'browserify:home:clean', (callback) ->
+  del 'public/js/home.js', callback
 
 gulp.task 'browserify', ['browserify:app', 'browserify:home']
 gulp.task 'browserify:watch', ['browserify:app:watch', 'browserify:home:watch']
 gulp.task 'browserify:clean', ['browserify:app:clean', 'browserify:home:clean']
-
-gulp.task 'fontawesome', ->
-  gulp.src 'bower_components/font-awesome/fonts/*'
-    .pipe gulp.dest 'public/fonts'
-
-gulp.task 'fontawesome:clean', ->
-  gulp.src 'public/fonts/*', read: false
-    .pipe $.rimraf()
 
 assetHelperBase = (type, name) ->
   dest = "/#{type}/#{name}.#{type}"
@@ -170,6 +160,10 @@ gulp.task 'server', ->
   app.get '/app', renderView 'app'
   app.get '/app/settings', renderView 'app'
   app.get '/app/domains/:id', renderView 'app'
+  app.get '/error/404', renderView 'error/404'
+  app.get '/error/500', renderView 'error/500'
+
+  app.use '/fonts', serveStatic path.resolve './bower_components/font-awesome/fonts'
   app.use serveStatic path.resolve './public'
 
   app.listen port
@@ -199,6 +193,9 @@ gulp.task 'minify', ['browserify', 'stylus'], ->
       removeOptionalTags: true
       removeRedundantAttributes: true
       collapseBooleanAttributes: true
+    .pipe $.if '*.html', $.rename (path) ->
+      path.dirname = 'views/' + path.dirname
+      path
     .pipe gulp.dest 'build'
     .pipe $.rev.manifest()
     .pipe gulp.dest 'build'
@@ -216,7 +213,7 @@ gulp.task 'build', ['minify'], ->
   fonts = gulp.src 'bower_components/font-awesome/fonts/*'
     .pipe $.rename dirname: 'public/fonts'
 
-  views = gulp.src 'build/**/*.html'
+  views = gulp.src 'build/views/**/*.html'
     .pipe $.rename (path) ->
       path.dirname = 'views/' + path.dirname
       path
@@ -225,8 +222,7 @@ gulp.task 'build', ['minify'], ->
     .pipe $.zip moment().format('YYYY-MM-DD_HH-mm-ss') + '.zip'
     .pipe gulp.dest 'build/dist'
 
-gulp.task 'clean', ['stylus:clean', 'browserify:clean', 'fontawesome:clean'], ->
-  gulp.src 'build/**/*', read: false
-    .pipe $.rimraf()
+gulp.task 'clean', ['stylus:clean', 'browserify:clean'], (callback) ->
+  del 'build/**/*', callback
 
-gulp.task 'default', [ 'build' ]
+gulp.task 'default', ['build']
